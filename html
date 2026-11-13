@@ -3,140 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compatibilidade entre Signos</title>
+    <title>Descubra seu Signo Zodiacal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-7">
+            <div class="col-md-6 col-lg-5">
                 <div class="card shadow-lg border-0 zodiac-card">
-                    <div class="card-body p-5">
-                        <h1 class="text-center mb-4 display-5 fw-bold text-primary">💕 Compatibilidade entre Signos</h1>
-                        <p class="text-center text-muted mb-4">Escolha dois signos para descobrir a compatibilidade básica (baseada no signo solar e elementos).</p>
+                    <div class="card-body p-5 text-center">
+                        <h1 class="mb-4 display-5 fw-bold text-primary">✨ Descubra seu Signo</h1>
+                        <p class="lead text-muted mb-4">Insira sua data de nascimento para conhecer as principais características do seu signo zodiacal.</p>
                         
-                        <form id="formCompat">
-                            <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="signo1" class="form-label fw-semibold">Primeiro Signo</label>
-                                    <select class="form-select form-select-lg" id="signo1" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="aries">Áries ♈</option>
-                                        <option value="touro">Touro ♉</option>
-                                        <option value="gemeos">Gêmeos ♊</option>
-                                        <option value="cancer">Câncer ♋</option>
-                                        <option value="leao">Leão ♌</option>
-                                        <option value="virgem">Virgem ♍</option>
-                                        <option value="libra">Libra ♎</option>
-                                        <option value="escorpiao">Escorpião ♏</option>
-                                        <option value="sagitario">Sagitário ♐</option>
-                                        <option value="capricornio">Capricórnio ♑</option>
-                                        <option value="aquario">Aquário ♒</option>
-                                        <option value="peixes">Peixes ♓</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label for="signo2" class="form-label fw-semibold">Segundo Signo</label>
-                                    <select class="form-select form-select-lg" id="signo2" required>
-                                        <option value="">Selecione...</option>
-                                        <option value="aries">Áries ♈</option>
-                                        <option value="touro">Touro ♉</option>
-                                        <option value="gemeos">Gêmeos ♊</option>
-                                        <option value="cancer">Câncer ♋</option>
-                                        <option value="leao">Leão ♌</option>
-                                        <option value="virgem">Virgem ♍</option>
-                                        <option value="libra">Libra ♎</option>
-                                        <option value="escorpiao">Escorpião ♏</option>
-                                        <option value="sagitario">Sagitário ♐</option>
-                                        <option value="capricornio">Capricórnio ♑</option>
-                                        <option value="aquario">Aquário ♒</option>
-                                        <option value="peixes">Peixes ♓</option>
-                                    </select>
-                                </div>
+                        <form id="formSigno">
+                            <div class="mb-4">
+                                <label for="dataNasc" class="form-label fw-semibold">Data de Nascimento</label>
+                                <input type="date" class="form-control form-control-lg" id="dataNasc" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill mt-2">
-                                Verificar Compatibilidade
+                            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">
+                                Descobrir meu Signo
                             </button>
                         </form>
-
-                        <div id="resultadoCompat" class="mt-5 d-none"></div>
+                        
+                        <p class="mt-4 small text-muted">Apenas o signo solar será calculado com base na data informada.</p>
+                        <div class="mt-4">
+                            <a href="compatibilidade.html" class="btn btn-outline-primary rounded-pill">Ver compatibilidade entre signos</a>
+                        </div>
                     </div>
-                </div>
-                <div class="text-center mt-4">
-                    <a href="index.html" class="btn btn-outline-primary rounded-pill">← Descobrir meu signo</a>
                 </div>
             </div>
         </div>
     </div>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const elementos = {
-            aries: "Fogo", touro: "Terra", gemeos: "Ar", cancer: "Água",
-            leao: "Fogo", virgem: "Terra", libra: "Ar", escorpiao: "Água",
-            sagitario: "Fogo", capricornio: "Terra", aquario: "Ar", peixes: "Água"
-        };
-
-        const nomes = {
-            aries: "Áries", touro: "Touro", gemeos: "Gêmeos", cancer: "Câncer",
-            leao: "Leão", virgem: "Virgem", libra: "Libra", escorpiao: "Escorpião",
-            sagitario: "Sagitário", capricornio: "Capricórnio", aquario: "Aquário", peixes: "Peixes"
-        };
-
-        const simbolos = {
-            aries: "♈", touro: "♉", gemeos: "♊", cancer: "♋",
-            leao: "♌", virgem: "♍", libra: "♎", escorpiao: "♏",
-            sagitario: "♐", capricornio: "♑", aquario: "♒", peixes: "♓"
-        };
-
-        function getCompatibilidade(el1, el2) {
-            if (el1 === el2) {
-                return { pct: 90, nivel: "Excelente", desc: "Mesmo elemento! Vocês se entendem naturalmente, compartilham ritmo e valores semelhantes. Relação fluida e confortável." };
-            }
-            const pares = [
-                ["Fogo", "Ar"], ["Ar", "Fogo"],
-                ["Terra", "Água"], ["Água", "Terra"]
-            ];
-            if (pares.some(p => (p[0] === el1 && p[1] === el2))) {
-                return { pct: 80, nivel: "Muito Boa", desc: "Elementos complementares. O Ar alimenta o Fogo e a Água nutre a Terra. Vocês se estimulam e se equilibram muito bem." };
-            }
-            return { pct: 55, nivel: "Moderada", desc: "Elementos diferentes trazem desafios e aprendizados. Com diálogo e respeito, a relação pode ser muito enriquecedora e dinâmica." };
-        }
-
-        document.getElementById("formCompat").addEventListener("submit", function(e) {
+        document.getElementById("formSigno").addEventListener("submit", function(e) {
             e.preventDefault();
-            const s1 = document.getElementById("signo1").value;
-            const s2 = document.getElementById("signo2").value;
-
-            if (!s1 || !s2) return;
-
-            const el1 = elementos[s1];
-            const el2 = elementos[s2];
-            const compat = getCompatibilidade(el1, el2);
-
-            const div = document.getElementById("resultadoCompat");
-            div.classList.remove("d-none");
-            div.innerHTML = `
-                <div class="text-center">
-                    <div class="display-4 mb-2">${simbolos[s1]} & ${simbolos[s2]}</div>
-                    <h2 class="fw-bold text-primary">${nomes[s1]} + ${nomes[s2]}</h2>
-                    <div class="my-4">
-                        <div class="progress" style="height: 30px; border-radius: 15px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: ${compat.pct}%; font-size: 1.1rem;" aria-valuenow="${compat.pct}" aria-valuemin="0" aria-valuemax="100">
-                                ${compat.pct}%
-                            </div>
-                        </div>
-                        <p class="mt-2 fw-semibold fs-5">${compat.nivel}</p>
-                    </div>
-                    <div class="p-4 bg-light rounded text-start">
-                        <p class="mb-2"><strong>Elementos:</strong> ${el1} e ${el2}</p>
-                        <p class="mb-0">${compat.desc}</p>
-                    </div>
-                    <p class="mt-4 small text-muted">Lembre-se: esta é uma análise baseada apenas no signo solar. A compatibilidade real depende de muitos outros fatores.</p>
-                </div>
-            `;
+            const data = document.getElementById("dataNasc").value;
+            if (data) {
+                window.location.href = "resultado.html?data=" + encodeURIComponent(data);
+            }
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
