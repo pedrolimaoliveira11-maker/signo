@@ -1,156 +1,64 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Corrida com Obstáculos</title>
-  <style>
-    body {
-      margin: 0;
-      background: #87CEEB;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
+/* style.css - Estilos personalizados para a página de signos */
+
+body {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    min-height: 100vh;
+    color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.zodiac-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    color: #212529;
+}
+
+.signo-simbolo {
+    font-size: 5rem;
+    line-height: 1;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+}
+
+.form-control:focus {
+    border-color: #6a11cb;
+    box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+}
+
+.badge {
+    font-size: 0.95rem;
+    padding: 0.5em 0.8em;
+}
+
+h1, h2, h5 {
+    font-weight: 700;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+@media (max-width: 576px) {
+    .signo-simbolo {
+        font-size: 4rem;
     }
-    #gameArea {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      background: linear-gradient(#87CEEB, #228B22);
+    .card-body {
+        padding: 2rem !important;
     }
-    .runner {
-      position: absolute;
-      bottom: 0;
-      width: 50px;
-      height: 80px;
-      border-radius: 10px;
-    }
-    #runner1 { left: 100px; background: red; }
-    #runner2 { left: 200px; background: blue; }
-    .obstacle {
-      position: absolute;
-      bottom: 0;
-      width: 40px;
-      height: 40px;
-      background: brown;
-      border-radius: 5px;
-    }
-    .powerup {
-      position: absolute;
-      bottom: 50px;
-      width: 30px;
-      height: 30px;
-      background: gold;
-      border-radius: 50%;
-    }
-    #finishLine {
-      position: absolute;
-      top: 0;
-      right: 50px;
-      width: 10px;
-      height: 100%;
-      background: yellow;
-    }
-    #message {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 24px;
-      font-weight: bold;
-      color: white;
-    }
-  </style>
-</head>
-<body>
-  <div id="gameArea">
-    <div id="runner1" class="runner"></div>
-    <div id="runner2" class="runner"></div>
-    <div id="finishLine"></div>
-    <div id="message">ESPAÇO (vermelho) / ENTER (azul)</div>
-  </div>
-
-  <script>
-    const gameArea = document.getElementById("gameArea");
-    const runner1 = document.getElementById("runner1");
-    const runner2 = document.getElementById("runner2");
-    const message = document.getElementById("message");
-
-    let pos1 = 100;
-    let pos2 = 200;
-    let gameOver = false;
-
-    // Criar obstáculos e power-ups
-    function createObstacle(x) {
-      const obs = document.createElement("div");
-      obs.className = "obstacle";
-      obs.style.left = x + "px";
-      gameArea.appendChild(obs);
-      return obs;
-    }
-
-    function createPowerup(x) {
-      const pu = document.createElement("div");
-      pu.className = "powerup";
-      pu.style.left = x + "px";
-      gameArea.appendChild(pu);
-      return pu;
-    }
-
-    const obstacles = [createObstacle(400), createObstacle(700), createObstacle(1000)];
-    const powerups = [createPowerup(600), createPowerup(900)];
-
-    document.addEventListener("keydown", (e) => {
-      if (gameOver) return;
-
-      if (e.code === "Space") {
-        pos1 += 20;
-        runner1.style.left = pos1 + "px";
-        checkCollision(runner1, "Jogador Vermelho");
-      }
-      if (e.code === "Enter") {
-        pos2 += 20;
-        runner2.style.left = pos2 + "px";
-        checkCollision(runner2, "Jogador Azul");
-      }
-
-      checkWinner();
-    });
-
-    function checkCollision(runner, playerName) {
-      const runnerRect = runner.getBoundingClientRect();
-
-      obstacles.forEach(obs => {
-        const obsRect = obs.getBoundingClientRect();
-        if (runnerRect.left < obsRect.right &&
-            runnerRect.right > obsRect.left &&
-            runnerRect.bottom > obsRect.top) {
-          message.textContent = playerName + " bateu no obstáculo!";
-          gameOver = true;
-        }
-      });
-
-      powerups.forEach(pu => {
-        const puRect = pu.getBoundingClientRect();
-        if (runnerRect.left < puRect.right &&
-            runnerRect.right > puRect.left &&
-            runnerRect.bottom > puRect.top) {
-          pu.remove();
-          message.textContent = playerName + " ganhou um turbo!";
-          let boost = 100;
-          runner.style.left = (parseInt(runner.style.left) + boost) + "px";
-        }
-      });
-    }
-
-    function checkWinner() {
-      const finishX = window.innerWidth - 60;
-      if (pos1 >= finishX) {
-        message.textContent = "Jogador Vermelho venceu!";
-        gameOver = true;
-      } else if (pos2 >= finishX) {
-        message.textContent = "Jogador Azul venceu!";
-        gameOver = true;
-      }
-    }
-  </script>
-</body>
-</html>
+}
